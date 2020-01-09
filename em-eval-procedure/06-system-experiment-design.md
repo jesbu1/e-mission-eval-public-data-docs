@@ -5,9 +5,9 @@ The em-eval procedure (Section [sec:our-procedure]) allows us to estimate the p
 
 This section explores the nuances of implementing such a procedure. We first describe a publicly available reference implementation of a system – em-eval-zephyr – that can be used perform this procedure. We then discuss challenges encountered while using the system to perform an experiment in the San Francisco Bay Area (Section [sec:accuracy<sub>e</sub>valuation]). Some of these challenges were addressed by system improvements, while others are documented as best practices for future data collectors.
 
-<span>ccc</span> ![image](figs/accuracy_control_configuration.png) & ![image](figs/trip_selection.png) & ![image](figs/map_leg_details.png)
-
-[fig:em-eval-zephyr-ui]
+| Control configuration | Trip selection | Map leg details |
+| --------------------- | -------------- | --------------- |
+|![image](figs/accuracy_control_configuration.png)|![image](figs/trip_selection.png)|![image](figs/map_leg_details.png)|
 
 System overview
 ---------------

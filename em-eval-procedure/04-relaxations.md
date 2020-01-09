@@ -23,7 +23,7 @@ No sensor is perfect and even the accuracy control phones can have sensing error
 
 | iOS | android |
 |---|---|
-|<img width=50% src="figs/ios_battery_settings_display.png"/>|<img width=50% src="figs/android_battery_settings_display.png"/>|
+|![image](figs/ios_battery_settings_display.png)|<img width=50% src="figs/android_battery_settings_display.png"/>|
 
 No control
 ----------
