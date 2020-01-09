@@ -21,8 +21,9 @@ The behavior of the same phone with the same configuration can vary over time, b
 No spatial ground truth  
 No sensor is perfect and even the accuracy control phones can have sensing errors. If we see a divergence between an experiment phone and the accuracy control, it is unclear which one has the error (Figure [fig:power<sub>a</sub>ccuracy<sub>v</sub>ariations]).
 
-|:-:|:-:|
-| ![image](figs/ios_battery_settings_display.png) | ![image](figs/android_battery_settings_display.png) |
+| iOS | android |
+|---|---|
+|<img width=50% src="figs/ios_battery_settings_display.png"/>|<img width=50% src="figs/android_battery_settings_display.png"/>|
 
 No control
 ----------
