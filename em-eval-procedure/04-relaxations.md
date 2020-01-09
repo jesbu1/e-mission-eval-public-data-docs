@@ -7,8 +7,6 @@ While em-eval (Section [sec:our-procedure]) addresses the complexities of HMS e
 |![image](figs/double_duty_cycling_android_1.png)|
 |![image](figs/spiky_range_high_accuracy_AO.png)|
 
-[fig:power<sub>a</sub>ccuracy<sub>v</sub>ariations]
-
 No artificial trips
 -------------------
 
@@ -23,9 +21,8 @@ The behavior of the same phone with the same configuration can vary over time, b
 No spatial ground truth  
 No sensor is perfect and even the accuracy control phones can have sensing errors. If we see a divergence between an experiment phone and the accuracy control, it is unclear which one has the error (Figure [fig:power<sub>a</sub>ccuracy<sub>v</sub>ariations]).
 
-<span>cc</span> ![image](figs/ios_battery_settings_display.png) & ![image](figs/android_battery_settings_display.png)
-
-[fig:power<sub>m</sub>easurement<sub>c</sub>hallenges]
+|:-:|:-:|
+| ![image](figs/ios_battery_settings_display.png) | ![image](figs/android_battery_settings_display.png) |
 
 No control
 ----------
