@@ -1,7 +1,7 @@
 Evaluation parameters
 ---------------------
 
-The experiment evaluates the power, accuracy and analysis trade-offs along 3 timelines of varying lengths. It first establishes the relationship between power and the *sensed accuracy* of the raw data received from the phone. The raw data consists of location, trip transitions and motion activity detection (Section [sec:virtual<sub>s</sub>ensors<sub>a</sub>nalysis]). Android does not expose a trip end sensor, so the evaluation uses includes a custom dwell based implementation. Finally, it explores the improvements to overall accuracy by analysis algorithms.
+The raw data in this dataset consists of location, trip transitions and motion activity detection. An overview of the raw data is below. Android does not expose a trip end sensor, so the evaluation uses includes a custom dwell based implementation.
 
 ### Built-in, black-box sensing parameters
 
@@ -45,9 +45,11 @@ Assigns labels to the segments. The most common classification task, and the onl
 We now outline the common error conditions for each algorithm type, and define the metrics that can be used to characterize the error. Additional concrete examples of error characteristics can be found in the interactive notebooks of the evaluation repository[1]
 
 ### Segmentation
-
-![image](figs/segmentation_delta_start_ts.png)
-![**Examples of errors in segmentation captured by the segmentation metrics**. *Top: large error in the trip start time for an iOS `HAHFDC` run*. The green line is the ground truth, red line is the sensed data. We got a visit end (trip start) transition at 18:41, but we detected a trip end within 30 ms so we did not sense any data. The next trip start was at 17:48, when we did start reading values, but this was almost the end of the trip.*Bottom: error in segmentation trip count for an android `HAMFDC` run*. On one multi-modal trip, we get multiple trip start and end transitions, largely corresponding to transit transfers. Note also that there at 8:30, there are two consecutive geofence exits (08:30 and 09:15) and an erroneous point in San Jose.](figs/segmentation_count.png) [fig:segmentation<sub>e</sub>rror<sub>e</sub>xamples]
+<figure>
+<img src="figs/segmentation_delta_start_ts.png">
+<img src="figs/segmentation_count.png">
+    <figcaption><b>Examples of errors in segmentation captured by the segmentation metrics</b>. <i>Top: large error in the trip start time for an iOS <code>HAHFDC</code> run</i>. The green line is the ground truth, red line is the sensed data. We got a visit end (trip start) transition at 18:41, but we detected a trip end within 30 ms so we did not sense any data. The next trip start was at 17:48, when we did start reading values, but this was almost the end of the trip.<i>Bottom: error in segmentation trip count for an android <code>HAMFDC</code> run</i>. On one multi-modal trip, we get multiple trip start and end transitions, largely corresponding to transit transfers. Note also that there at 8:30, there are two consecutive geofence exits (08:30 and 09:15) and an erroneous point in San Jose.</figcaption>
+</figure>
 
 The main error conditions for segmentation algorithms are:
 
@@ -86,8 +88,11 @@ Our proposed matching algorithm has two steps.
 
 ### Trajectory tracking
 
-![image](figs/spatial_tracking_errors.png)
-![**Examples of errors in trajectory captured by the trajectory tracking metrics**. *Top: Spatial tracking errors from multiple iOS `MAHFDC` runs.* The green line is the ground truth, other colors are the sensed data. For each sensed trajectory, the spatial error is the shortest perpendicular distance to the spatial ground truth line (i.e., the thick blue line from the brown point to the green line. *Bottom: Temporal errors caused by backtracking to previous spatially valid point, based on an android `HAMFDC` run*. The sensed points in red are largely along the spatial ground truth trajectory in green, but they periodically return to a previous point in the trajectory, generating zigzags. In this case, the spatial error of the repeated points is small, but the temporal error, encompassing cross-bay jumps, is large.](figs/temporal_tracking_errors.png) [fig:trajectory<sub>t</sub>racking<sub>e</sub>rrors]
+<figure>
+<img src="figs/spatial_tracking_errors.png">
+<img src="figs/temporal_tracking_errors.png">
+    <figcaption><b>Examples of errors in trajectory captured by the trajectory tracking metrics</b>. <i>Top: Spatial tracking errors from multiple iOS <code>MAHFDC</code> runs.</i> The green line is the ground truth, other colors are the sensed data. For each sensed trajectory, the spatial error is the shortest perpendicular distance to the spatial ground truth line (i.e., the thick blue line from the brown point to the green line. <i>Bottom: Temporal errors caused by backtracking to previous spatially valid point, based on an android <code>HAMFDC</code> run</i>. The sensed points in red are largely along the spatial ground truth trajectory in green, but they periodically return to a previous point in the trajectory, generating zigzags. In this case, the spatial error of the repeated points is small, but the temporal error, encompassing cross-bay jumps, is large.</figcaption>
+</figure>
 
 The main error conditions for tracking algorithms are:
 
@@ -137,7 +142,7 @@ Formally, let `GTS` be the set of ground truth segments for a particular timelin
 |182|False|high|False|False|True|False|19:27:21-07:00|
 |183|False|high|False|False|False|False|19:28:01-07:00|
 
-[fig:segmentation<sub>g</sub>t<sub>1</sub>]
+Example of how bad segmentation can lead to classification accuracies > 1 using an example fom an iOS `MAHFDC` run. This trip consisted of a `walk_start` section from `18:59:17 -> 19:01:06`, a `suburb_bicycling` section from `19:01:06 -> 19:20:31` and a `walk_end` section from `19:20:31 -> 19:20:57`. However, the sensing API did not detect any cycling (see transitions above), so the only sensed section was `19:01:53 -> 19:27:21, WALKING`. So the ~ 30 sec long `walk_end` section matched the entire ~ 26 min long sensed section, **and** the mode was correct. So the computed accuracy ratio was **5800**!!
 
 Once we have computed these metrics, we can combine them in various ways for comparisons. For example:
 
