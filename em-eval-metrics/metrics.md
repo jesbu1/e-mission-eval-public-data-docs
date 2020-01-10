@@ -142,7 +142,7 @@ Formally, let `GTS` be the set of ground truth segments for a particular timelin
 |182|False|high|False|False|True|False|19:27:21-07:00|
 |183|False|high|False|False|False|False|19:28:01-07:00|
 
-Example of how bad segmentation can lead to classification accuracies > 1 using an example fom an iOS `MAHFDC` run. This trip consisted of a `walk_start` section from `18:59:17 -> 19:01:06`, a `suburb_bicycling` section from `19:01:06 -> 19:20:31` and a `walk_end` section from `19:20:31 -> 19:20:57`. However, the sensing API did not detect any cycling (see transitions above), so the only sensed section was `19:01:53 -> 19:27:21, WALKING`. So the ~ 30 sec long `walk_end` section matched the entire ~ 26 min long sensed section, **and** the mode was correct. So the computed accuracy ratio was **5800**!!
+Example of how bad segmentation can lead to classification accuracies > 1 using an example fom an iOS `MAHFDC` run. This trip consisted of a `walk_start` section from `18:59:17 -> 19:01:06`, a `suburb_bicycling` section from `19:01:06 -> 19:20:31` and a `walk_end` section from `19:20:31 -> 19:20:57`. However, the sensing API did not detect any cycling (see transitions above), so the only sensed section was `19:01:53 -> 19:27:21, WALKING`. So the ~ 30 sec long `walk_end` section matched the entire ~ 26 min long sensed section, **and** the mode was correct. So the computed accuracy ratio was **5800%**!!
 
 Once we have computed these metrics, we can combine them in various ways for comparisons. For example:
 
