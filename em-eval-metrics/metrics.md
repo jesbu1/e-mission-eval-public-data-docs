@@ -1,23 +1,3 @@
-Experiment design
------------------
-
-[em-eval is a generic evaluation procedure](../em-eval-procedure) and can be used with any kind of HMS. em-eval-zephyr is a reference implementation of em-eval that used to evaluate many experimental settings relevant to HMSes over any set of trajectories. The evaluator can pick her settings based on her research goals (Chapter [chap:reproducible<sub>g</sub>eospatial<sub>e</sub>valuation]). In this section, we outline our goals for this evaluation, and use them to define three timelines that cover 15 separate modes, including recently popular modes such as e-scooter and e-bike.
-
-Dwell time  
-Instead of focusing only on trips, we wanted to evaluate a timeline that included significant dwell time. We could see from our calibration runs that android appears to have built-in duty cycling (Figure [fig:power<sub>m</sub>easurement<sub>c</sub>hallenges]). Including significant dwell time would allow us to capture the impact of this context sensitive behavior. Therefore, we structured our timeline trips as round trips to libraries with an intermediate dwell time \(\approx 3 \times\) the mean travel time to the location.
-
-Broad range of modes  
-HMS evaluations should cover a broad spectrum of trip types. Since we are creating artificial trips, we can structure them to maximize mode variety. In order to efficiently cover this space, we tried to ensure that no mode was repeated. We only had to include commuter rail twice since there were few other transit options to reach the starting point chosen.
-
-Multi-modal transfers  
-Detecting multi-modal transfers in a HMS is tricky because there isn’t a clear signal similar to a trip end. We ensure that there are many transition examples by emphasizing multi-modal transfers.
-
-With those goals in mind, we decided on three artificial timelines of varying lengths that cover a total of 15 separate modes. We chose each timeline to be round trips to libraries to not include identifiable location data (e.g., home location) in our experiments. A description of each timeline with the associated modes and dwell times is given in Table  [table:timelines-table].
-
-| id | Description | Outgoing trip modes | Incoming trip modes | Dwell time | Overall time |
-| -- | ----------- | ------------------- | ------------------- | ---------- | ----------|
-[table:timelines-table]
-
 Evaluation parameters
 ---------------------
 
@@ -90,19 +70,19 @@ Our proposed matching algorithm has two steps.
     Pairs of (S, E) transitions that define the sensed ranges
 
     Implementation  
-    For each S, find the first corresponding E. Any intermediate unexpected transitions are ignored — e.g., \(\{S_0, S_1, E_0, E_1,
-    E_2, E_3\} \rightarrow \{S_0, E_0\}\)
+    For each S, find the first corresponding E. Any intermediate unexpected transitions are ignored — e.g., `{S_0, S_1, E_0, E_1,
+    E_2, E_3} -> {S_0, E_0}`
 
 2.  The second step, which is always applicable, matches the ground truth trip or section segment with an arbitrary number of sensed ranges from the previous step.
 
     Input  
-    \(GTS = \{gt_1, gt_2,\ldots\}, SS = \{ss_1, ss_2,\ldots\}, \forall ss, ss = (S, E) \)
+    `GTS = {gt_1, gt_2, ...}, SS = {ss_1, ss_2,...}, forall ss, ss = (S, E)`
 
     Output  
-    \(SS_{g} \subseteq SS \forall g \in GTS\)
+    `SS_g \subseteq SS \forall g \in GTS\)`
 
     Implementation  
-    For each \(g\) find the \(ss_s\) with the closest start timestamp and the \(ss_e\) with the closest end timestamp. Both matches have threshold of \(T_c\) beyond which we will not match any entry. Then, \(SS_{g} = \{ss_s, \ldots ss_e\}\). Note that we match each ground truth segment in isolation, so it is possible for a particular \(ss\) to match two separate \(g\). However, because of the threshold on the match, we expect this to be unlikely.
+    For each `g` find the _ss_s_ with the closest start timestamp and the `ss_e` with the closest end timestamp. Both matches have threshold of `T_c` beyond which we will not match any entry. Then, `SS_g = {ss_s, ... ss_e}`. Note that we match each ground truth segment in isolation, so it is possible for a particular `ss` to match two separate `g`. However, because of the threshold on the match, we expect this to be unlikely.
 
 ### Trajectory tracking
 
@@ -119,12 +99,12 @@ Formally, let the set of sensed points for an evaluation run \(r\) be \(P_r\). L
 = \{tgt_s, tgt_e\}\). We can then define the metrics as follows:
 
   
-Perpendicular distances from the sensed points to the ground truth trajectory. Lower is better. \[\sqrt{\frac{1}{|P|}\sum_{p \in P_r} d(p, G)^2}\]
+Perpendicular distances from the sensed points to the ground truth trajectory. Lower is better. `[\sqrt{\frac{1}{|P|}\sum_{p \in P_r} d(p, G)^2}]`
 
   
-1.  Use the accuracy control and ground truth trajectories to determine a combined spatiotemporal reference trajectory \(G_r\). Reference trajectory calculation is complicated because the accuracy controls have significant error in practice. Note that, unlike spatial ground truth, spatiotemporal ground truth is **run-specific**, due to variations in travel time.
+1.  Use the accuracy control and ground truth trajectories to determine a combined spatiotemporal reference trajectory `G_r`. Reference trajectory calculation is complicated because the accuracy controls have significant error in practice. Note that, unlike spatial ground truth, spatiotemporal ground truth is **run-specific**, due to variations in travel time.
 
-2.  Perpendicular distance from the sensed points to the reference trajectory. \[\sqrt{\frac{1}{|P|}\sum_{p \in P_r} d(p, G_r)^2}\]
+2.  Perpendicular distance from the sensed points to the reference trajectory. `[\sqrt{\frac{1}{|P|}\sum_{p \in P_r} d(p, G_r)^2}]`
 
 ### Classification
 
@@ -134,11 +114,11 @@ Classification metrics are the easiest to work with, since they fit well into cl
 
 2.  Since we classify sections, the classification accuracy depends on the segmentation accuracy. For example, if a classification algorithm uses the average speed as a determining factor, but the segmentation combines the walk to the station with the subsequent short train section, the section may be misclassified. We address this by reporting the ratio of the sensed segment that has the correct mode.
 
-Formally, let \(GTS\) be the set of ground truth segments for a particular timeline. As with the segmentation metrics, each \(gts \in GTS\) can match a sequence \(SS_{gts} = \{ss_{{gts}_1}, ss_{{gts}_2},\ldots,ss_{{gts}_n}\}\) of \(ss
-\in SS\). Note that since we only label modes, we only consider *sections* and not generic *segments* here. Similar metrics can be applied to trip labels (e.g., purpose) if we support them in the future. We can then define the overall, segmentation-dependent accuracy by checking the fraction of time spent in matching modes. Note that this can sometimes be greater than 1, as a spillover from segmentation mismatches (Table [fig:segmentation<sub>g</sub>t<sub>1</sub>]). As close to 1 as possible is better. \[a_s = \sum_{ss_{gts} \in SS_{gts}, ss_{gts}.label = gts.label} \frac{|ss_{gts}.end\_ts - ss_{gts}.start\_ts|}{|gts.end\_ts - gts.start\_ts|} \forall gts \in GTS\]
+Formally, let `GTS` be the set of ground truth segments for a particular timeline. As with the segmentation metrics, each `gts \in GTS` can match a sequence `SS_{gts} = {ss_gts_1}, ss_gts_2},...,ss_gts_n}}` of `ss
+\in SS`. Note that since we only label modes, we only consider *sections* and not generic *segments* here. Similar metrics can be applied to trip labels (e.g., purpose) if we support them in the future. We can then define the overall, segmentation-dependent accuracy by checking the fraction of time spent in matching modes. Note that this can sometimes be greater than 1, as a spillover from segmentation mismatches (Table [fig:segmentation<sub>g</sub>t<sub>1</sub>]). As close to 1 as possible is better. `a_s = \sum_{ss_gts \in SS_gts, ss_gts.label = gts.label} \frac{|ss_gts.end_ts - ss_gts.start_ts|}{|gts.end_ts - gts.start_ts|} \forall gts \in GTS`
 
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-||automotive|confidence|cycling|running|stationary|walking|fmt\_time|
+|idx|automotive|confidence|cycling|running|stationary|walking|fmt_time|
+|---|----------|----------|-------|-------|----------|-------|--------|
 |154|False|medium|False|False|False|**True**|19:01:53-07:00|
 |155|False|high|False|False|False|False|19:02:46-07:00|
 |156|False|medium|False|False|False|**True**|19:02:51-07:00|
