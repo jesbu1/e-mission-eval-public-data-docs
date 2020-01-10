@@ -19,7 +19,7 @@ modes such as e-scooter and e-bike. We had two main goals for the data collectio
 A brief summary of the timelines is as below. The details are in the dataset ([summary](https://github.com/e-mission/e-mission-eval-public-data/tree/master/spec_creation/final_sfbayarea) and [filled](https://github.com/e-mission/e-mission-eval-public-data/tree/master/spec_creation/final_sfbayarea_filled)).
 
 |id | Description | Outgoing trip modes | Incoming trip modes | Travel time | Dwell time | Overall time |
-|---|-------------|---------------------|---------------------|------------|--------------|
+|---|-------------|---------------------|---------------------|-------------|------------|--------------|
 | `unimodal_trip_car_bike_mtv_la` | Suburban round trip | car (suburban street) | bicycle | 40 mins | 1.5 hr | 2 hrs |
 | `car_scooter_brex_san_jose` | Downtown library | car (freeway) | escooter, bus rapid transit | 3 hrs | 3 hrs | 6 hrs |
 | `train_bus_ebike_mtv_ucb` | Multi-modal trip across the bay | suburb walk, commuter train, subway, city bus, university walk | ebike, express bus, downtown walk, light rail, commuter train with tunnels, suburb walk | 6 hrs | 6 hrs | 12 hrs |
@@ -37,7 +37,7 @@ We currently have the following data from these timelines.
 
 #### Reroutes
 Since the data was collected over multiple months, there were small reroutes to some of the trajectories. Notably:
-- I used a ramp instead of stairs to wheel the e-bike to the bikeshare dock (see Acknowledgements below)
+- I used a ramp instead of stairs to wheel the non-bikeshare e-bike to the bikeshare dock (see Acknowledgements below)
 - The express bus was rerouted from the Temporary Transbay Terminal to the Salesforce Transit Center
 - I was not allowed to ride the LBNL shuttle after the first round and the replacement UC Berkeley shuttle route was off by a block
 
